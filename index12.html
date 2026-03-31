@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            font-Family:Arial,sans-serif;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #010800;
+            margin: 0;
+        }
+        .calculator{
+            width: 300px;
+            background-color: #14a001;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(182, 170, 170, 0.5);
+            padding: 20px;   
+        }
+
+        .display{
+            width: 95%;
+            height: 50px;
+            text-align: right;
+            font-size: 1.5rem;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            color: #14a001;
+            background-color: rgb(224, 224, 224);
+
+        }
+        .buttons{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 10px;
+        }
+        .button{
+            background-color: #031b00;
+            border: none;
+            font-size: 1.5rem;
+            padding: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: aliceblue;
+
+        }
+        .button:hover{
+            background-color: #052e02;
+            transform: scale(1.2);
+        }
+        .button:active{
+            transform: scale(1);
+    
+        }
+        .button.clear{
+            background-color: rgb(201, 188, 10);
+        }
+        .button.clear:hover{
+            background-color:rgb(141, 132, 7) ;
+        }
+        .button.equal{
+            background-color: rgb(201, 188, 10);
+        }
+        .button.equal:hover{
+            background-color: rgb(160, 150, 5);
+        }
+        .button.operator{
+            background-color: rgb(201, 188, 10);
+        }
+        .button.operator:hover{
+            background-color: rgb(163, 153, 8);
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>καλκουλατορ</title>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled>
+        <div class="buttons">
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button operator" onclick="appendOperation('/')">\</button>
+            <button class="button operator" onclick="appendOperation('*')">*</button>
+            <button class="button operator" onclick="appendOperation('-')">-</button>
+            <button class="button " onclick="appendNumber('7')">7</button>
+            <button class="button " onclick="appendNumber('8')">8</button>
+            <button class="button " onclick="appendNumber('9')">9</button>
+            <button class="button operator" onclick="appendOperation('+')">+</button>
+            <button class="button " onclick="appendNumber('4')">4</button>
+            <button class="button " onclick="appendNumber('5')">5</button>
+            <button class="button " onclick="appendNumber('6')">6</button>
+            <button class="button equal" onclick="calculate()">=</button>
+            <button class="button " onclick="appendNumber('1')">1</button>
+            <button class="button " onclick="appendNumber('2')">2</button>
+            <button class="button " onclick="appendNumber('3')">3</button>
+            <button class="button " onclick="appendNumber('0')">0</button>
+            
+        </div>
+    </div>
+    <script language="javascript">
+    let currentInput='';
+    let currentOperation='';
+    let previousInput='';
+    
+
+    function appendNumber(number){
+        currentInput += number;
+        document.getElementById('display').value=` ${previousInput} ${currentOperation} ${currentInput} `;
+        
+    }
+    function appendOperation(operation){
+        if(currentInput==='')return;
+        if(previousInput!==''){
+            calculate();
+        }
+        currentOperation=operation;
+        previousInput=currentInput;
+        currentInput=''
+        document.getElementById('display').value=` ${previousInput} ${currentOperation}`;
+
+    }
+    function calculate(){
+        if(previousInput===''||currentInput==='')return;
+        let result;
+        let prev=parseFloat(previousInput);
+        let current= parseFloat(currentInput);
+
+
+
+switch (currentOperation) {
+    case '+':
+        result = prev + current;
+        break;
+    case '-':
+        result = prev - current;
+        break;
+    case '*':
+        result = prev * current;
+        break;
+    case '/':
+        if (current === 0) {
+            document.getElementById("display").value="Cannot divide by zero";
+            return;
+        }
+        result = prev / current;
+        break;
+    default:
+        return;
+}
+
+currentInput = result.toString();
+currentOperation = '';
+previousInput = '';
+document.getElementById('display').value = currentInput;
+    }
+
+function clearDisplay() {
+    currentInput = '';
+    previousInput = '';
+    currentOperation = '';
+    document.getElementById('display').value = '';
+}
+</script>
+</body>
+</html>
